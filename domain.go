@@ -45,8 +45,8 @@ func (d *Domain) sign(hash []byte) (signed []byte, err error) {
 // ParsePrivateKey returns the private key from a PEM formatted block.
 func ParsePrivateKey(keyPEM []byte) (key *rsa.PrivateKey, err error) {
 	der, _ := pem.Decode(keyPEM)
-	if der == nil || block.Type != "PUBLIC KEY" {
-		log.Fatal("failed to decode PEM block containing public key")
+	if der == nil || der.Type != "RSA PRIVATE KEY" {
+		return nil, fmt.Errorf("failed to decode PEM block containing private key")
 	}
 	return x509.ParsePKCS1PrivateKey(der.Bytes)
 }
